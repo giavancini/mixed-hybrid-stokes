@@ -5,6 +5,9 @@ project(HdivStokes)
 include_directories(
 	"${PROJECT_SOURCE_DIR}/mhstokes"
 )
+include_directories(
+	"${PROJECT_SOURCE_DIR}/matred"
+)
 
 find_package(NeoPZ REQUIRED HINTS ${CMAKE_SOURCE_DIR}/../neopz_install/ ${CMAKE_SOURCE_DIR}/neopz_install/)
 
@@ -18,8 +21,9 @@ file(GLOB_RECURSE PZ_SRC
      "../neopz/*.cpp"
 )
 
-add_custom_target( GlobalFiles SOURCES ${PZ_SRC})
+add_custom_target(GlobalFiles SOURCES ${PZ_SRC})
 
 add_subdirectory(mhstokes)
+add_subdirectory(matred)
 add_subdirectory(lib)
 add_subdirectory(executable)

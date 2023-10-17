@@ -20,6 +20,7 @@
 #include <pzfstrmatrix.h>
 #include <pzstrmatrixot.h>
 #include <TPZSpStructMatrix.h>
+#include "TPZMatRedStructMatrix.h"
 
 int main()
 {
@@ -29,8 +30,8 @@ int main()
   
     bool printdata = true;
 
-    std::string filepath = "../examples/Elasticity/";
-    std::string filename = "UniformTension3D";
+    std::string filepath = "../examples/";
+    std::string filename = "AxisymmetricObstructedAxialFlow";
 
     ProblemData simData;
     simData.ReadJson(filepath + filename + ".json");
@@ -58,11 +59,11 @@ int main()
     TPZLinearAnalysis an(cmesh_m, RenumType::ENone);
     
     //TPZSSpStructMatrix<STATE, TPZStructMatrixOT<STATE>> strmat(cmesh_m);
-    TPZSSpStructMatrix<> strmat(cmesh_m);
-    //TPZFStructMatrix<> strmat(cmesh_m);
+    //TPZSSpStructMatrix<> strmat(cmesh_m);
+    TPZFStructMatrix<> strmat(cmesh_m);
     // TPZSkylineStructMatrix<> strmat(cmesh_m);
 
-    strmat.SetNumThreads(0);
+    strmat.SetNumThreads(8);
 
     // TPZEquationFilter filter(cmesh_m->NEquations());
     // std::set<int64_t> setremove;
@@ -116,8 +117,8 @@ int main()
     //an.PostProcessError(Errors, false);
 
     // vtk export
-    TPZVTKGenerator vtk(cmesh_m, {"Pressure", "Displacement", "Stress", "Strain"}, filename, simData.Resolution());
-    vtk.SetNThreads(0);
+    TPZVTKGenerator vtk(cmesh_m, {"Pressure", "Velocity", "Stress"}, filename, simData.Resolution());
+    vtk.SetNThreads(8);
     vtk.Do();
 
     std::cout << "\n\nSimulation finished without errors :) \n\n";
